@@ -19,7 +19,7 @@ namespace iSearch
 
 			DispatcherTimer minuteTimer = new DispatcherTimer();
 			minuteTimer.Tick += minuteTimer_Tick;
-			minuteTimer.Interval = new TimeSpan(0, 1, 0);
+			minuteTimer.Interval = TimeSpan.FromMinutes(1.0);
 			minuteTimer.Start();
 
 			//keyTimer exists to prevent multiple searches within [interval]
