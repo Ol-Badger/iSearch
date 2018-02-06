@@ -1,0 +1,43 @@
+﻿<Window x:Class="iSearch.MainWindow"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		Title="Search!"
+		SizeToContent="WidthAndHeight"
+		WindowStyle="None"
+		AllowsTransparency="True"
+		ShowInTaskbar="False"
+		Loaded="Window_Loaded"
+		FocusManager.FocusedElement="{Binding ElementName=tbSearchBox}"
+		Height="31"
+		Topmost="True"
+		Icon="find.ico" >
+
+	<Canvas MouseLeftButtonDown="DragWindow"
+			Background="Red"
+			Width="174"
+			Height="24">
+		<TextBox x:Name="tbSearchBox"
+				 KeyDown="OnKeyDown"
+				 Width="160"
+				 Height="24" 
+				 Background="Black" 
+				 Foreground="White" 
+				 TextAlignment="Center"
+				 MouseLeave="tbSearchBox_MouseLeave" 
+				 PreviewMouseUp="tbSearchBox_PreviewMouseUp"
+				 MouseDoubleClick="tbSearchBox_MouseDoubleClick" PreviewKeyDown="tbSearchBox_PreviewKeyDown" >
+			<TextBox.ContextMenu>
+				<ContextMenu>
+					<MenuItem Header="E_xit" 	  Click="OnExitClick" />
+				</ContextMenu>
+			</TextBox.ContextMenu>
+		</TextBox>
+
+		<Popup x:Name="thePopup"
+			   StaysOpen="False"
+			   PlacementTarget="{Binding ElementName=tbSearchBox}"
+			   Closed="OnPopupClosed">
+			<Calendar x:Name="theCalendar" SelectedDatesChanged="OnDateClick"/>
+		</Popup>
+	</Canvas>
+</Window>

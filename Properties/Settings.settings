@@ -1,0 +1,42 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="iSearch.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="SEARCHgg" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">gg,https://www.google.com/search?q=,SEP=+</Value>
+    </Setting>
+    <Setting Name="SEARCHimdb" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">imdb,http://www.imdb.com/find/?q=,SEP=+</Value>
+    </Setting>
+    <Setting Name="SEARCHmap" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">map,https://www.google.com/maps/search/,SEP=+</Value>
+    </Setting>
+    <Setting Name="SEARCHso" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">so,https://www.stackoverflow.com/search?q=,SEP=+</Value>
+    </Setting>
+    <Setting Name="SEARCHwik" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">wik,http://www.wikipedia.org/wiki/Special:Search/,SEP=_</Value>
+    </Setting>
+    <Setting Name="SEARCHyou" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">you,https://www.youtube.com/results?search_query=,SEP=+</Value>
+    </Setting>
+    <Setting Name="SEARCHamaz" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">amaz,http://www.amazon.com/s/?keywords=,SEP=%20</Value>
+    </Setting>
+    <Setting Name="SEARCHflix" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">flix,https://www.netflix.com/search/,SEP=%20</Value>
+    </Setting>
+    <Setting Name="SEARCHnyt" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">nyt,http://query.nytimes.com/search/sitesearch/?action=click&amp;contentCollection&amp;region=TopBar&amp;WT.nav=searchWidget&amp;module=SearchSubmit&amp;pgtype=Homepage#/,SEP= </Value>
+    </Setting>
+    <Setting Name="SEARCHev" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ev,c:\program files\everything\everything.exe ,PARM=-s "$"</Value>
+    </Setting>
+    <Setting Name="SEARCHurb" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">urb,http://www.urbandictionary.com/define.php?term=,SEP=+</Value>
+    </Setting>
+    <Setting Name="SEARCHdic" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">dic,https://www.merriam-webster.com/dictionary/,SEP=%20</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
