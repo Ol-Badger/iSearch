@@ -52,6 +52,8 @@ namespace iSearch
 		{
 			if (SearchUnavailable)
 				return;
+			if (e.Key==Key.F1)
+				System.Diagnostics.Process.Start("iSearch.chm");
 			if (e.Key != Key.Return) return;
 			SearchUnavailable = true;
 			keyTimer.Start();
