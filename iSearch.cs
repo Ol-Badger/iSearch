@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.Windows.Input;
+using iSearch.Properties;
 
 namespace iSearch
 {
@@ -59,12 +60,15 @@ namespace iSearch
         */
         private static void InitDic()
         {
-            foreach (SettingsProperty currentProperty in Properties.Settings.Default.Properties)
+			// You have to prime the actual values pump by asking for one by name.
+	        var unused = Settings.Default.SEARCHdic;
+
+            foreach (SettingsPropertyValue currentProperty in Settings.Default.PropertyValues)
             {
                 if (currentProperty.Name.StartsWith("SEARCH"))
                 {
                     //parse
-                    string[] values = currentProperty.DefaultValue.ToString().Split(',');
+                    string[] values = currentProperty.PropertyValue.ToString().Split(',');
                     var key = values[0];
                     var target = values[1];
                     var separator = values[2];
