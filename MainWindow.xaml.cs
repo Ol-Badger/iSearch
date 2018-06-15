@@ -36,8 +36,10 @@ namespace iSearch
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			int offsetHeight = 70;
-			int offsetWidth = (int)Width + 0;
+			//int offsetHeight = 70;
+			int offsetHeight = Properties.Settings.Default.OffsetHeight;
+			//int offsetWidth = (int)Width + 0;
+			int offsetWidth = (int) Width + Properties.Settings.Default.OffsetWidth;
 			Left = (int)SystemParameters.PrimaryScreenWidth - offsetWidth;
 			Top = (int)SystemParameters.PrimaryScreenHeight - offsetHeight;
 
