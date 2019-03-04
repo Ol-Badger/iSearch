@@ -12,7 +12,7 @@ namespace iSearch.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.7.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -25,7 +25,7 @@ namespace iSearch.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("gg,https://www.google.com,/search?q=,SEP=+")]
+        [global::System.Configuration.DefaultSettingValueAttribute("gg,https://www.google.com,https://www.google.com/search?q=$,+")]
         public string SEARCHgg {
             get {
                 return ((string)(this["SEARCHgg"]));
@@ -34,7 +34,7 @@ namespace iSearch.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("imdb,http://www.imdb.com,/find/?q=,SEP=+")]
+        [global::System.Configuration.DefaultSettingValueAttribute("imdb,http://www.imdb.com,http://www.imdb.com/find/?q=$,+")]
         public string SEARCHimdb {
             get {
                 return ((string)(this["SEARCHimdb"]));
@@ -43,7 +43,7 @@ namespace iSearch.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("map,https://www.google.com,/maps/search/,SEP=+")]
+        [global::System.Configuration.DefaultSettingValueAttribute("map,https://www.google.com/maps,https://www.google.com/maps/search/$,+")]
         public string SEARCHmap {
             get {
                 return ((string)(this["SEARCHmap"]));
@@ -52,7 +52,7 @@ namespace iSearch.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("so,https://www.stackoverflow.com,/search?q=,SEP=+")]
+        [global::System.Configuration.DefaultSettingValueAttribute("so,https://www.stackoverflow.com,https://www.stackoverflow.com/search?q=$,+")]
         public string SEARCHso {
             get {
                 return ((string)(this["SEARCHso"]));
@@ -61,16 +61,7 @@ namespace iSearch.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("wik,http://www.wikipedia.org,/wiki/Special:Search/,SEP=_")]
-        public string SEARCHwik {
-            get {
-                return ((string)(this["SEARCHwik"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("you,https://www.youtube.com,/results?search_query=,SEP=+")]
+        [global::System.Configuration.DefaultSettingValueAttribute("you,https://www.youtube.com,https://www.youtube.com/results?search_query=$,+")]
         public string SEARCHyou {
             get {
                 return ((string)(this["SEARCHyou"]));
@@ -79,7 +70,7 @@ namespace iSearch.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("amaz,http://www.amazon.com,/s/?keywords=,SEP=%20")]
+        [global::System.Configuration.DefaultSettingValueAttribute("amaz,http://www.amazon.com,http://www.amazon.com/s/?keywords=$,%20")]
         public string SEARCHamaz {
             get {
                 return ((string)(this["SEARCHamaz"]));
@@ -88,7 +79,7 @@ namespace iSearch.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("flix,https://www.netflix.com,/search/,SEP=%20")]
+        [global::System.Configuration.DefaultSettingValueAttribute("flix,https://www.netflix.com,https://www.netflix.com/search/$,%20")]
         public string SEARCHflix {
             get {
                 return ((string)(this["SEARCHflix"]));
@@ -97,17 +88,8 @@ namespace iSearch.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("nyt,http://query.nytimes.com,/search/sitesearch/?action=click&contentCollection&r" +
-            "egion=TopBar&WT.nav=searchWidget&module=SearchSubmit&pgtype=Homepage#/,SEP= ")]
-        public string SEARCHnyt {
-            get {
-                return ((string)(this["SEARCHnyt"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ev,c:\\program files\\everything\\everything.exe ,,PARM=-s \"$\"")]
+        [global::System.Configuration.DefaultSettingValueAttribute("ev,c:\\program files\\everything\\everything.exe,c:\\program files\\everything\\everyth" +
+            "ing.exe -s $,")]
         public string SEARCHev {
             get {
                 return ((string)(this["SEARCHev"]));
@@ -116,7 +98,8 @@ namespace iSearch.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("urb,http://www.urbandictionary.com,/define.php?term=,SEP=+")]
+        [global::System.Configuration.DefaultSettingValueAttribute("urb,http://www.urbandictionary.com,http://www.urbandictionary.com/define.php?term" +
+            "=$,+")]
         public string SEARCHurb {
             get {
                 return ((string)(this["SEARCHurb"]));
@@ -125,7 +108,8 @@ namespace iSearch.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("dic,https://www.merriam-webster.com,/dictionary/,SEP=%20")]
+        [global::System.Configuration.DefaultSettingValueAttribute("dic,https://www.merriam-webster.com,https://www.merriam-webster.com/dictionary/$," +
+            "%20")]
         public string SEARCHdic {
             get {
                 return ((string)(this["SEARCHdic"]));
@@ -135,9 +119,9 @@ namespace iSearch.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("iexplore.exe")]
-        public string Browser {
+        public string Browser1 {
             get {
-                return ((string)(this["Browser"]));
+                return ((string)(this["Browser1"]));
             }
         }
         
@@ -161,10 +145,48 @@ namespace iSearch.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("wf,http://www.wellsfargo.com,,")]
+        [global::System.Configuration.DefaultSettingValueAttribute("wf,http://www.wellsfargo.com,,,")]
         public string SEARCHwf {
             get {
                 return ((string)(this["SEARCHwf"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe")]
+        public string Browser {
+            get {
+                return ((string)(this["Browser"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ebay,https://www.ebay.com,https://www.ebay.com/sch/i.html?_from=R40&_trksid=p2060" +
+            "353.m570.l1312.R1.TR0.TRC0.A0.H0.TRS1&_sacat=0&_nkw=$,+")]
+        public string SEARCHebay {
+            get {
+                return ((string)(this["SEARCHebay"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("nyt,https://www.nytimes.com,https://www.google.com/search?q=site:nytimes.com+$,+")]
+        public string SEARCHnyt {
+            get {
+                return ((string)(this["SEARCHnyt"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("wik,http://www.wikipedia.org/wiki,http://en.wikipedia.org/wiki/$,_\r\n             " +
+            "   \t")]
+        public string SEARCHwik {
+            get {
+                return ((string)(this["SEARCHwik"]));
             }
         }
     }

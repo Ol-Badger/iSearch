@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
+using csLib;
 using iSearch;
 
 namespace iSearch
@@ -32,6 +33,10 @@ namespace iSearch
 		private void OnExitClick(object sender, RoutedEventArgs e)
 		{
 			Close();
+		}
+		private void OnAboutClick(object sender, RoutedEventArgs e)
+		{
+		    MessageBox.Show("Version: " + AssemblyAccessors.AssemblyVersion,"iSearch");
 		}
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -204,5 +209,6 @@ namespace iSearch
 
 
 		#endregion
+
 	}
 }

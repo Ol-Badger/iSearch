@@ -3,42 +3,36 @@
   <Profiles />
   <Settings>
     <Setting Name="SEARCHgg" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">gg,https://www.google.com,/search?q=,SEP=+</Value>
+      <Value Profile="(Default)">gg,https://www.google.com,https://www.google.com/search?q=$,+</Value>
     </Setting>
     <Setting Name="SEARCHimdb" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">imdb,http://www.imdb.com,/find/?q=,SEP=+</Value>
+      <Value Profile="(Default)">imdb,http://www.imdb.com,http://www.imdb.com/find/?q=$,+</Value>
     </Setting>
     <Setting Name="SEARCHmap" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">map,https://www.google.com,/maps/search/,SEP=+</Value>
+      <Value Profile="(Default)">map,https://www.google.com/maps,https://www.google.com/maps/search/$,+</Value>
     </Setting>
     <Setting Name="SEARCHso" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">so,https://www.stackoverflow.com,/search?q=,SEP=+</Value>
-    </Setting>
-    <Setting Name="SEARCHwik" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">wik,http://www.wikipedia.org,/wiki/Special:Search/,SEP=_</Value>
+      <Value Profile="(Default)">so,https://www.stackoverflow.com,https://www.stackoverflow.com/search?q=$,+</Value>
     </Setting>
     <Setting Name="SEARCHyou" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">you,https://www.youtube.com,/results?search_query=,SEP=+</Value>
+      <Value Profile="(Default)">you,https://www.youtube.com,https://www.youtube.com/results?search_query=$,+</Value>
     </Setting>
     <Setting Name="SEARCHamaz" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">amaz,http://www.amazon.com,/s/?keywords=,SEP=%20</Value>
+      <Value Profile="(Default)">amaz,http://www.amazon.com,http://www.amazon.com/s/?keywords=$,%20</Value>
     </Setting>
     <Setting Name="SEARCHflix" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">flix,https://www.netflix.com,/search/,SEP=%20</Value>
-    </Setting>
-    <Setting Name="SEARCHnyt" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">nyt,http://query.nytimes.com,/search/sitesearch/?action=click&amp;contentCollection&amp;region=TopBar&amp;WT.nav=searchWidget&amp;module=SearchSubmit&amp;pgtype=Homepage#/,SEP= </Value>
+      <Value Profile="(Default)">flix,https://www.netflix.com,https://www.netflix.com/search/$,%20</Value>
     </Setting>
     <Setting Name="SEARCHev" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">ev,c:\program files\everything\everything.exe ,,PARM=-s "$"</Value>
+      <Value Profile="(Default)">ev,c:\program files\everything\everything.exe,c:\program files\everything\everything.exe -s $,</Value>
     </Setting>
     <Setting Name="SEARCHurb" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">urb,http://www.urbandictionary.com,/define.php?term=,SEP=+</Value>
+      <Value Profile="(Default)">urb,http://www.urbandictionary.com,http://www.urbandictionary.com/define.php?term=$,+</Value>
     </Setting>
     <Setting Name="SEARCHdic" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">dic,https://www.merriam-webster.com,/dictionary/,SEP=%20</Value>
+      <Value Profile="(Default)">dic,https://www.merriam-webster.com,https://www.merriam-webster.com/dictionary/$,%20</Value>
     </Setting>
-    <Setting Name="Browser" Type="System.String" Scope="Application">
+    <Setting Name="Browser1" Type="System.String" Scope="Application">
       <Value Profile="(Default)">iexplore.exe</Value>
     </Setting>
     <Setting Name="OffsetHeight" Type="System.Int32" Scope="Application">
@@ -48,7 +42,20 @@
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="SEARCHwf" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">wf,http://www.wellsfargo.com,,</Value>
+      <Value Profile="(Default)">wf,http://www.wellsfargo.com,,,</Value>
+    </Setting>
+    <Setting Name="Browser" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\Program Files (x86)\Google\Chrome\Application\chrome.exe</Value>
+    </Setting>
+    <Setting Name="SEARCHebay" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ebay,https://www.ebay.com,https://www.ebay.com/sch/i.html?_from=R40&amp;_trksid=p2060353.m570.l1312.R1.TR0.TRC0.A0.H0.TRS1&amp;_sacat=0&amp;_nkw=$,+</Value>
+    </Setting>
+    <Setting Name="SEARCHnyt" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">nyt,https://www.nytimes.com,https://www.google.com/search?q=site:nytimes.com+$,+</Value>
+    </Setting>
+    <Setting Name="SEARCHwik" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">wik,http://www.wikipedia.org/wiki,http://en.wikipedia.org/wiki/$,_
+                	</Value>
     </Setting>
   </Settings>
 </SettingsFile>
