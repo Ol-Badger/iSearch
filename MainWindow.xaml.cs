@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -6,7 +7,6 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
 using csLib;
-using iSearch;
 
 namespace iSearch
 {
@@ -39,6 +39,11 @@ namespace iSearch
 		    MessageBox.Show("Version: " + AssemblyAccessors.AssemblyVersion,"iSearch");
 		}
 
+        private void OnHelpClick(object sender, RoutedEventArgs e)
+        {
+            Process.Start("iSearch.chm");
+        }
+
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
 			//int offsetHeight = 70;
@@ -60,7 +65,7 @@ namespace iSearch
 			if (SearchUnavailable)
 				return;
 			if (e.Key==Key.F1)
-				System.Diagnostics.Process.Start("iSearch.chm");
+				Process.Start("iSearch.chm");
 			if (e.Key != Key.Return) return;
 			SearchUnavailable = true;
 			keyTimer.Start();
@@ -94,7 +99,7 @@ namespace iSearch
 		private void ShowTime()
 		{
 			DateTime dt = DateTime.Now.ToLocalTime();
-			tbSearchBox.Text = String.Format("{0}  {1}", dt.ToShortDateString(), dt.ToShortTimeString());
+			tbSearchBox.Text = $"{dt.ToShortDateString()}  {dt.ToShortTimeString()}";
 		}
 
 		#region focus events
@@ -166,7 +171,7 @@ namespace iSearch
 
 		public static IntPtr SetWindowLong(IntPtr hWnd, int nIndex, IntPtr dwNewLong)
 		{
-			int error = 0;
+			int error;
 			IntPtr result = IntPtr.Zero;
 			// Win32 SetWindowLong doesn't clear error on success
 			SetLastError(0);

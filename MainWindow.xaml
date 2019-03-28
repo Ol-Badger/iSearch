@@ -29,7 +29,8 @@
 			<TextBox.ContextMenu>
 				<ContextMenu>
                     <MenuItem Header="About"      Click="OnAboutClick"/>
-					<MenuItem Header="E_xit" 	  Click="OnExitClick" />
+                    <MenuItem Header="Help"      Click="OnHelpClick"/>
+                    <MenuItem Header="E_xit" 	  Click="OnExitClick" />
 				</ContextMenu>
 			</TextBox.ContextMenu>
 		</TextBox>
