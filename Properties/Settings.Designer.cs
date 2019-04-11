@@ -89,7 +89,7 @@ namespace iSearch.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("ev,c:\\program files\\everything\\everything.exe,c:\\program files\\everything\\everyth" +
-            "ing.exe -s \"$\", ")]
+            "ing.exe -s \"$\",")]
         public string SEARCHev {
             get {
                 return ((string)(this["SEARCHev"]));

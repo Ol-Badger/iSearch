@@ -24,7 +24,7 @@
       <Value Profile="(Default)">flix,https://www.netflix.com,https://www.netflix.com/search/$,%20</Value>
     </Setting>
     <Setting Name="SEARCHev" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">ev,c:\program files\everything\everything.exe,c:\program files\everything\everything.exe -s "$", </Value>
+      <Value Profile="(Default)">ev,c:\program files\everything\everything.exe,c:\program files\everything\everything.exe -s "$",</Value>
     </Setting>
     <Setting Name="SEARCHurb" Type="System.String" Scope="Application">
       <Value Profile="(Default)">urb,http://www.urbandictionary.com,http://www.urbandictionary.com/define.php?term=$,+</Value>

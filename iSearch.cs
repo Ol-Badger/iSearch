@@ -166,7 +166,9 @@ namespace iSearch
 
         internal string ReplaceDollar(string parms)
         {
-            string input = parms.Replace(" ", Separator);
+            string input = parms;
+            if (Separator != string.Empty)
+                input = parms.Replace(" ", Separator);
             return SearchString.Replace("$", input);
         }
 
