@@ -36,11 +36,19 @@ namespace iSearch
             History.Add(new Tuple<string, bool>(InputString, ControlKeyDown));
 
             if (InputString.Contains(".") && !InputString.Contains(" "))
-                URI = httpDirect(InputString); //this will send the string directly to the browser
-            else if (ControlKeyDown)
-                URI = httpExpand(InputString); //this adds .com and sends to browser
-            else
             {
+                URI = httpDirect(InputString); //this will send the string directly to the browser
+                RunBrowser(URI);
+                return;
+            }
+            else if (ControlKeyDown)
+            {
+                URI = httpExpand(InputString); //this adds .com and sends to browser
+                RunBrowser(URI);
+                return;
+            }
+            else
+                {
                 int IndexOfSpace = InputString.IndexOf(' ');
                 if (IndexOfSpace < 0) //check for single token input
                 {
