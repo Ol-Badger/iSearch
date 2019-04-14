@@ -32,48 +32,44 @@ namespace iSearch
 
         public static void Search(string InputString, bool ControlKeyDown)
         {
-            string URI;
             History.Add(new Tuple<string, bool>(InputString, ControlKeyDown));
 
             if (InputString.Contains(".") && !InputString.Contains(" "))
             {
-                URI = httpDirect(InputString); //this will send the string directly to the browser
-                RunBrowser(URI);
+                RunBrowser(httpDirect(InputString)); //send the string directly to the browser
                 return;
             }
             else if (ControlKeyDown)
             {
-                URI = httpExpand(InputString); //this adds .com and sends to browser
-                RunBrowser(URI);
+                RunBrowser(httpExpand(InputString)); //this adds .com and sends to browser
                 return;
             }
+
+            string URI;
+            int IndexOfSpace = InputString.IndexOf(' ');
+            if (IndexOfSpace < 0) //check for single token input
+            {
+                /*
+                 * Single token here
+                 * If it's in the search dictionary, just go to that domain.
+                 * Else google the token
+                 */
+                URI = SearchDic.ContainsKey(InputString)
+                    ? SearchDic[InputString].Site
+                    : SearchDic["gg"].ReplaceDollar(InputString);
+            }
             else
-                {
-                int IndexOfSpace = InputString.IndexOf(' ');
-                if (IndexOfSpace < 0) //check for single token input
-                {
-                    /*
-                     * Single token here
-                     * If it's in the search dictionary, just go to that domain.
-                     * Else google the token
-                     */
-                    URI = SearchDic.ContainsKey(InputString)
-                        ? SearchDic[InputString].Site
-                        : SearchDic["gg"].ReplaceDollar(InputString);
-                }
-                else
-                {
-                    //token has a space in it
-                    string key = InputString.Substring(0, IndexOfSpace); //key is first token
-                    /*
-                     * If it's in the search dictionary, create target and parm
-                     * param is always the parameter.
-                     * target is only set if it's an internal program, else empty string
-                     */
-                    URI = SearchDic.ContainsKey(key)
-                        ? SearchDic[key].ReplaceDollar(InputString.Substring(IndexOfSpace + 1))
-                        : SearchDic["gg"].ReplaceDollar(InputString);
-                }
+            {
+                //token has a space in it
+                string key = InputString.Substring(0, IndexOfSpace); //key is first token
+                /*
+                 * If it's in the search dictionary, create target and parm
+                 * param is always the parameter.
+                 * target is only set if it's an internal program, else empty string
+                 */
+                URI = SearchDic.ContainsKey(key)
+                    ? SearchDic[key].ReplaceDollar(InputString.Substring(IndexOfSpace + 1))
+                    : SearchDic["gg"].ReplaceDollar(InputString);
             }
 
             if (URI.Contains("http"))
