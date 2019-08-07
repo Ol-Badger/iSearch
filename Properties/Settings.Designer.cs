@@ -189,5 +189,26 @@ namespace iSearch.Properties {
                 return ((string)(this["SEARCHwik"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("tofr,https://translate.google.com/?hl=en&tab=rT,https://translate.google.com/?hl=" +
+            "en&op=translate&sl=enop=translate&sl=en&tl=fr&text=$,%20")]
+        public string SEARCHtofr {
+            get {
+                return ((string)(this["SEARCHtofr"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("toeng,https://translate.google.com/?hl=en&tab=rt#view=home&op=translate&sl=auto&t" +
+            "l=en,https://translate.google.com/?hl=en&tab=rt#view=home&op=translate&sl=auto&t" +
+            "l=en&text=$,%20")]
+        public string SEARCHtoeng {
+            get {
+                return ((string)(this["SEARCHtoeng"]));
+            }
+        }
     }
 }

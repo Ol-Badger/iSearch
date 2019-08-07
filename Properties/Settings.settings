@@ -57,5 +57,11 @@
       <Value Profile="(Default)">wik,http://www.wikipedia.org/wiki,http://en.wikipedia.org/wiki/$,_
                 	</Value>
     </Setting>
+    <Setting Name="SEARCHtofr" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">tofr,https://translate.google.com/?hl=en&amp;tab=rT,https://translate.google.com/?hl=en&amp;op=translate&amp;sl=enop=translate&amp;sl=en&amp;tl=fr&amp;text=$,%20</Value>
+    </Setting>
+    <Setting Name="SEARCHtoeng" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">toeng,https://translate.google.com/?hl=en&amp;tab=rt#view=home&amp;op=translate&amp;sl=auto&amp;tl=en,https://translate.google.com/?hl=en&amp;tab=rt#view=home&amp;op=translate&amp;sl=auto&amp;tl=en&amp;text=$,%20</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
