@@ -12,7 +12,7 @@ namespace iSearch.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.4.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -182,8 +182,7 @@ namespace iSearch.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("wik,http://www.wikipedia.org/wiki,http://en.wikipedia.org/wiki/$,_\r\n             " +
-            "   \t")]
+        [global::System.Configuration.DefaultSettingValueAttribute("wik,http://www.wikipedia.org/wiki,http://en.wikipedia.org/wiki/$,_")]
         public string SEARCHwik {
             get {
                 return ((string)(this["SEARCHwik"]));
@@ -208,6 +207,15 @@ namespace iSearch.Properties {
         public string SEARCHtoeng {
             get {
                 return ((string)(this["SEARCHtoeng"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("fedex,https://www.fedex.com/en-us/home.html,,,")]
+        public string SEARCHfedex {
+            get {
+                return ((string)(this["SEARCHfedex"]));
             }
         }
     }
