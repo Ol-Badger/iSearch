@@ -218,5 +218,23 @@ namespace iSearch.Properties {
                 return ((string)(this["SEARCHfedex"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("gm,https://mail.google.com/mail,,,")]
+        public string SEARCHgm {
+            get {
+                return ((string)(this["SEARCHgm"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("em,gm")]
+        public string ALIASem {
+            get {
+                return ((string)(this["ALIASem"]));
+            }
+        }
     }
 }

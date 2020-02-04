@@ -143,6 +143,13 @@ namespace iSearch
                     var separator = values[3];
                     SearchDic.Add(key, new SearchItem(site, searchstring, separator));
                 }
+                else if (currentProperty.Name.StartsWith("ALIAS"))
+                {
+                    string[] values = currentProperty.PropertyValue.ToString().Split(',');
+                    var key  = values[0];
+                    var alias = values[1];
+                    SearchDic.Add(key,new SearchItem(SearchDic[alias].Site, SearchDic[alias].SearchString,SearchDic[alias].Separator));
+                }
             }
         }
 
@@ -196,7 +203,7 @@ namespace iSearch
         }
 
         internal string Site { get; }
-        private string SearchString { get; }
-        private string Separator { get; }
+        internal string SearchString { get; }
+        internal string Separator { get; }
     }
 }
