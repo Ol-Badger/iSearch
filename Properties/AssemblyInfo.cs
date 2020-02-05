@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MGT Systems")]
 [assembly: AssemblyProduct("Floater")]
-[assembly: AssemblyCopyright("Copyright © MGT Systems 2014-2019")]
+[assembly: AssemblyCopyright("Copyright © MGT Systems 2014-2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -51,5 +51,5 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.3.*")]
+[assembly: AssemblyVersion("2.4.*")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
