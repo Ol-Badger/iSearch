@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iSearch", "iSearch.csproj", "{3AE7B9A9-EA5E-4962-966D-BDDA0AF1269F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iSearch", "wpffloat\iSearch.csproj", "{3AE7B9A9-EA5E-4962-966D-BDDA0AF1269F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
