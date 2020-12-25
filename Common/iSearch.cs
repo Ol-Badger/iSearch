@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Diagnostics;
+using System.IO;
 using System.Windows.Input;
-using iSearch.Properties;
+using csLib;
 
 namespace iSearch
 {
@@ -14,10 +14,12 @@ namespace iSearch
 
         private static readonly List<Tuple<string, bool>> History = new List<Tuple<string, bool>>();
         private static int HistoryPointer;
-        private static readonly string Browser;
+        private static string Browser;
+        public static PrivateProfile pp;
 
         static aSearch()
         {
+            /*
             InitSearchDic();
             //Browser is either set to some executable or null
             try
@@ -28,6 +30,15 @@ namespace iSearch
             {
                 // ignored
             }
+            */
+        }
+
+        public static void Init()
+        {
+            string IniFile = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\iSearch.ini";
+            pp = new PrivateProfile(IniFile);
+            InitSearchDicFromIni();
+            Browser = pp.ReadString("Options", "Browser", "");
         }
 
         public static void Search(string InputString, bool ControlKeyDown)
@@ -115,54 +126,26 @@ namespace iSearch
 
         #region Search Providers and Dictionary Initialization
 
-        private static void InitSearchDic()
+        public static void InitSearchDicFromIni()
         {
-            /*
-            Initialize dictionary of search providers from application settings.
-            We're looking for strings whose Name starts with Search and are of the type
-            Shortcut (i.e. key, Target (often domain URL), SearchString, Separator
-
-            The SearchString should contain $ which is replaced by the input after
-            spaces are converted to the separator string
-            */
-
-            // You have to prime the actual values pump by asking for one by name.
-            var unused = Settings.Default.SEARCHdic;
-            foreach (SettingsPropertyValue currentProperty in Settings.Default.PropertyValues)
+            SearchDic.Clear();
+            Dictionary<string, string> SectionDic = pp.ReadSectionDataAsDictionary("Search");
+            foreach (KeyValuePair<string, string> entry in SectionDic)
             {
-                if (currentProperty.Name.StartsWith("SEARCH"))
-                {
-                    /*
-                     * parse: sample is
-                     * imdb,http://www.imdb.com,/find/?q=,SEP=+
-                     */
-                    string[] values = currentProperty.PropertyValue.ToString().Split(',');
-                    var key = values[0];
-                    var site = values[1];
-                    var searchstring = values[2];
-                    var separator = values[3];
-                    SearchDic.Add(key, new SearchItem(site, searchstring, separator));
-                }
-                else if (currentProperty.Name.StartsWith("ALIAS"))
-                {
-                    string[] values = currentProperty.PropertyValue.ToString().Split(',');
-                    var key  = values[0];
-                    var alias = values[1];
-                    SearchDic.Add(key,new SearchItem(SearchDic[alias].Site, SearchDic[alias].SearchString,SearchDic[alias].Separator));
-                }
+                string[] values = entry.Value.Split(',');
+                var site = values[0];
+                var searchstring = values[1];
+                var separator = values[2];
+                SearchDic.Add(entry.Key, new SearchItem(site, searchstring, separator));
             }
+            SectionDic = pp.ReadSectionDataAsDictionary("Alias");
+            foreach (KeyValuePair<string, string> entry in SectionDic) 
+                SearchDic.Add(entry.Key, new SearchItem(SearchDic[entry.Value].Site, SearchDic[entry.Value].SearchString, SearchDic[entry.Value].Separator));
         }
 
-        private static string httpExpand(string srch)
-        {
-            return httpDirect(srch) + ".com";
-        }
+        private static string httpExpand(string srch) => httpDirect(srch) + ".com";
 
-        private static string httpDirect(string srch)
-        {
-            return (srch);
-        }
-
+        private static string httpDirect(string srch) => (srch);
         #endregion
     }
 
@@ -183,10 +166,7 @@ namespace iSearch
             return SearchString.Replace("$", input);
         }
 
-        internal bool IsLocal()
-        {
-            return Site.EndsWith(".exe");
-        }
+        internal bool IsLocal() => Site.EndsWith(".exe");
 
         internal string Target()
         {

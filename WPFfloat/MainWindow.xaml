@@ -28,8 +28,9 @@
 				 MouseDoubleClick="tbSearchBox_MouseDoubleClick" PreviewKeyDown="tbSearchBox_PreviewKeyDown" >
 			<TextBox.ContextMenu>
 				<ContextMenu>
+                    <MenuItem Header="Reload ini" Click="OnReloadClick"/>
                     <MenuItem Header="About"      Click="OnAboutClick"/>
-                    <MenuItem Header="Help"      Click="OnHelpClick"/>
+                    <MenuItem Header="Help"       Click="OnHelpClick"/>
                     <MenuItem Header="E_xit" 	  Click="OnExitClick" />
 				</ContextMenu>
 			</TextBox.ContextMenu>

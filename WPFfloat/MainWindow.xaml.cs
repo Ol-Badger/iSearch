@@ -14,6 +14,7 @@ namespace iSearch
 	{
 		private bool SearchUnavailable;
 		private readonly System.Timers.Timer keyTimer;
+        //private aSearch search;
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -28,56 +29,28 @@ namespace iSearch
 			keyTimer.Elapsed += keyTimer_Elapsed;
 
 			ShowTime();
-		}
-
-		private void OnExitClick(object sender, RoutedEventArgs e)
-		{
-			Close();
-		}
-		private void OnAboutClick(object sender, RoutedEventArgs e)
-		{
-		    MessageBox.Show("Version: " + AssemblyAccessors.AssemblyVersion,"iSearch");
-		}
-
-        private void OnHelpClick(object sender, RoutedEventArgs e)
-        {
-            Process.Start("iSearch.chm");
+            //search = new aSearch();
         }
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			//int offsetHeight = 70;
-			int offsetHeight = Properties.Settings.Default.OffsetHeight;
-			//int offsetWidth = (int)Width + 0;
-			int offsetWidth = (int) Width + Properties.Settings.Default.OffsetWidth;
-			Left = (int)SystemParameters.PrimaryScreenWidth - offsetWidth;
-			Top = (int)SystemParameters.PrimaryScreenHeight - offsetHeight;
+			aSearch.Init();
+			SetPosition();
 
-			//following code (along with code at bottom of file) inhibits showing in task switcher
+			//following code (along with code in Window styles region) inhibits showing in task switcher
 			WindowInteropHelper wndHelper = new WindowInteropHelper(this);
 			int exStyle = (int)GetWindowLong(wndHelper.Handle, (int)GetWindowLongFields.GWL_EXSTYLE);
 			exStyle |= (int)ExtendedWindowStyles.WS_EX_TOOLWINDOW;
 			SetWindowLong(wndHelper.Handle, (int)GetWindowLongFields.GWL_EXSTYLE, (IntPtr)exStyle);
 		}
-		
-		private void OnKeyDown(object sender, KeyEventArgs e)
-		{
-			if (SearchUnavailable)
-				return;
-			if (e.Key==Key.F1)
-				Process.Start("iSearch.chm");
-			if (e.Key != Key.Return) return;
-			SearchUnavailable = true;
-			keyTimer.Start();
-			aSearch.Search(tbSearchBox.Text, e.KeyboardDevice.IsKeyDown(Key.LeftCtrl));
-		}
 
-		private void tbSearchBox_PreviewKeyDown(object sender, KeyEventArgs e)
+		private void SetPosition()
 		{
-			if (e.Key == Key.Down || e.Key == Key.Up)
-			{
-				tbSearchBox.Text = aSearch.GetStringFromHistory(e);
-			}
+			int offsetHeight = aSearch.pp.ReadInt("Options", "OffsetHeight", 0);
+			int offsetWidth = aSearch.pp.ReadInt("Options", "OffsetWidth", 0);
+
+			Left = (int)SystemParameters.PrimaryScreenWidth - offsetWidth;
+			Top = (int)SystemParameters.PrimaryScreenHeight - offsetHeight;
 		}
 
 		private void DragWindow(object sender, MouseButtonEventArgs e)
@@ -85,6 +58,30 @@ namespace iSearch
 			DragMove();
 		}
 
+		#region Context Menu
+		private void OnExitClick(object sender, RoutedEventArgs e)
+		{
+			Close();
+		}
+
+        private void OnAboutClick(object sender, RoutedEventArgs e)
+		{
+			MessageBox.Show("Version: " + AssemblyAccessors.AssemblyVersion, "iSearch");
+		}
+
+		private void OnHelpClick(object sender, RoutedEventArgs e)
+		{
+			Process.Start("iSearch.chm");
+		}
+
+		private void OnReloadClick(object sender, RoutedEventArgs e)
+		{
+			aSearch.InitSearchDicFromIni();
+			SetPosition();
+		}
+		#endregion
+
+		#region Time/Timer
 		private void minuteTimer_Tick(object sender, EventArgs e)
 		{
 			if (!tbSearchBox.IsKeyboardFocused)
@@ -101,8 +98,29 @@ namespace iSearch
 			DateTime dt = DateTime.Now.ToLocalTime();
 			tbSearchBox.Text = $"{dt.ToShortDateString()}  {dt.ToShortTimeString()}";
 		}
+		#endregion
 
-		#region focus events
+		#region focus/click events
+		private void OnKeyDown(object sender, KeyEventArgs e)
+		{
+			if (SearchUnavailable)
+				return;
+			if (e.Key == Key.F1)
+				Process.Start("iSearch.chm");
+			if (e.Key != Key.Return) return;
+			SearchUnavailable = true;
+			keyTimer.Start();
+			aSearch.Search(tbSearchBox.Text, e.KeyboardDevice.IsKeyDown(Key.LeftCtrl));
+		}
+
+		private void tbSearchBox_PreviewKeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Key == Key.Down || e.Key == Key.Up)
+			{
+				tbSearchBox.Text = aSearch.GetStringFromHistory(e);
+			}
+		}
+
 		private void tbSearchBox_MouseLeave(object sender, MouseEventArgs e)
 		{
 			ShowTime();
@@ -116,13 +134,12 @@ namespace iSearch
 				//e.Handled = true;
 			}
 		}
-		#endregion
 
 		private void tbSearchBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
 			thePopup.IsOpen = true;
 		}
-
+		#endregion
 
 		#region calendar
 		private void OnDateClick(object sender, SelectionChangedEventArgs e)
@@ -145,21 +162,19 @@ namespace iSearch
 		 */
 		#endregion
 
-
+		#region Window styles
 		//Following code found in
 		//http://stackoverflow.com/questions/357076/best-way-to-hide-a-window-from-the-alt-tab-program-switcher/551847#551847
 		//posting by Franci Penov 
-
-		#region Window styles
 		[Flags]
-		public enum ExtendedWindowStyles
+		private enum ExtendedWindowStyles
 		{
 			// ...
 			WS_EX_TOOLWINDOW = 0x00000080,
 			// ...
 		}
 
-		public enum GetWindowLongFields
+		private enum GetWindowLongFields
 		{
 			// ...
 			GWL_EXSTYLE = (-20),
@@ -167,12 +182,12 @@ namespace iSearch
 		}
 
 		[DllImport("user32.dll")]
-		public static extern IntPtr GetWindowLong(IntPtr hWnd, int nIndex);
+		private static extern IntPtr GetWindowLong(IntPtr hWnd, int nIndex);
 
-		public static IntPtr SetWindowLong(IntPtr hWnd, int nIndex, IntPtr dwNewLong)
+		private static IntPtr SetWindowLong(IntPtr hWnd, int nIndex, IntPtr dwNewLong)
 		{
 			int error;
-			IntPtr result = IntPtr.Zero;
+			IntPtr result /*= IntPtr.Zero*/;
 			// Win32 SetWindowLong doesn't clear error on success
 			SetLastError(0);
 
@@ -204,16 +219,10 @@ namespace iSearch
 		[DllImport("user32.dll", EntryPoint = "SetWindowLong", SetLastError = true)]
 		private static extern Int32 IntSetWindowLong(IntPtr hWnd, int nIndex, Int32 dwNewLong);
 
-		private static int IntPtrToInt32(IntPtr intPtr)
-		{
-			return unchecked((int)intPtr.ToInt64());
-		}
+		private static int IntPtrToInt32(IntPtr intPtr) => unchecked((int)intPtr.ToInt64());
 
 		[DllImport("kernel32.dll", EntryPoint = "SetLastError")]
-		public static extern void SetLastError(int dwErrorCode);
-
-
+		private static extern void SetLastError(int dwErrorCode);
 		#endregion
-
 	}
 }
