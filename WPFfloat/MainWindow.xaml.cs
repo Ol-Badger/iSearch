@@ -14,7 +14,7 @@ namespace iSearch
 	{
 		private bool SearchUnavailable;
 		private readonly System.Timers.Timer keyTimer;
-        //private aSearch search;
+		private aSearch search;
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -29,12 +29,11 @@ namespace iSearch
 			keyTimer.Elapsed += keyTimer_Elapsed;
 
 			ShowTime();
-            //search = new aSearch();
-        }
+			search = new aSearch();
+		}
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			aSearch.Init();
 			SetPosition();
 
 			//following code (along with code in Window styles region) inhibits showing in task switcher
@@ -46,8 +45,8 @@ namespace iSearch
 
 		private void SetPosition()
 		{
-			int offsetHeight = aSearch.pp.ReadInt("Options", "OffsetHeight", 0);
-			int offsetWidth = aSearch.pp.ReadInt("Options", "OffsetWidth", 0);
+			int offsetHeight = search.pp.ReadInt("Options", "OffsetHeight", 0);
+			int offsetWidth = search.pp.ReadInt("Options", "OffsetWidth", 0);
 
 			Left = (int)SystemParameters.PrimaryScreenWidth - offsetWidth;
 			Top = (int)SystemParameters.PrimaryScreenHeight - offsetHeight;
@@ -64,7 +63,7 @@ namespace iSearch
 			Close();
 		}
 
-        private void OnAboutClick(object sender, RoutedEventArgs e)
+		private void OnAboutClick(object sender, RoutedEventArgs e)
 		{
 			MessageBox.Show("Version: " + AssemblyAccessors.AssemblyVersion, "iSearch");
 		}
@@ -76,7 +75,7 @@ namespace iSearch
 
 		private void OnReloadClick(object sender, RoutedEventArgs e)
 		{
-			aSearch.InitSearchDicFromIni();
+			search = new aSearch();
 			SetPosition();
 		}
 		#endregion
@@ -110,14 +109,14 @@ namespace iSearch
 			if (e.Key != Key.Return) return;
 			SearchUnavailable = true;
 			keyTimer.Start();
-			aSearch.Search(tbSearchBox.Text, e.KeyboardDevice.IsKeyDown(Key.LeftCtrl));
+			search.Search(tbSearchBox.Text, e.KeyboardDevice.IsKeyDown(Key.LeftCtrl));
 		}
 
 		private void tbSearchBox_PreviewKeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.Key == Key.Down || e.Key == Key.Up)
 			{
-				tbSearchBox.Text = aSearch.GetStringFromHistory(e);
+				tbSearchBox.Text = search.GetStringFromHistory(e);
 			}
 		}
 

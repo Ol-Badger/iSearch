@@ -7,33 +7,22 @@ using csLib;
 
 namespace iSearch
 {
-    public static class aSearch
+    public class aSearch
     {
-        private static readonly Dictionary<string, SearchItem> SearchDic =
+        private readonly Dictionary<string, SearchItem> SearchDic =
             new Dictionary<string, SearchItem>();
 
-        private static readonly List<Tuple<string, bool>> History = new List<Tuple<string, bool>>();
-        private static int HistoryPointer;
-        private static string Browser;
-        public static PrivateProfile pp;
+        private readonly List<Tuple<string, bool>> History = new List<Tuple<string, bool>>();
+        private int HistoryPointer;
+        private string Browser;
+        internal PrivateProfile pp;
 
-        static aSearch()
+        public aSearch()
         {
-            /*
-            InitSearchDic();
-            //Browser is either set to some executable or null
-            try
-            {
-                Browser = Settings.Default["Browser"].ToString();
-            }
-            catch (Exception)
-            {
-                // ignored
-            }
-            */
+            Init();
         }
 
-        public static void Init()
+        private void Init()
         {
             string IniFile = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\iSearch.ini";
             pp = new PrivateProfile(IniFile);
@@ -41,7 +30,7 @@ namespace iSearch
             Browser = pp.ReadString("Options", "Browser", "");
         }
 
-        public static void Search(string InputString, bool ControlKeyDown)
+        public void Search(string InputString, bool ControlKeyDown)
         {
             History.Add(new Tuple<string, bool>(InputString, ControlKeyDown));
 
@@ -90,13 +79,13 @@ namespace iSearch
         }
 
         #region URI manipulators
-        static string GetTarget(string uri)
+        string GetTarget(string uri)
         {
             int Index = uri.IndexOf(".exe", StringComparison.OrdinalIgnoreCase);
             return uri.Substring(0, Index + 4);
         }
 
-        static string GetParm(string uri)
+        string GetParm(string uri)
         {
             int Index = uri.IndexOf(".exe", StringComparison.OrdinalIgnoreCase);
             if (Index + 5 < uri.Length)
@@ -105,7 +94,7 @@ namespace iSearch
         }
         #endregion
 
-        static void RunBrowser(string target)
+        void RunBrowser(string target)
         {
             if (Browser != "")
                 Process.Start(Browser, target);
@@ -113,20 +102,19 @@ namespace iSearch
                 Process.Start(target);
         }
 
-        public static string GetStringFromHistory(KeyEventArgs e)
+        public string GetStringFromHistory(KeyEventArgs e)
         {
             if (History.Count == 0)
                 return string.Empty;
-            if (e.Key == Key.Up)
+            if (e.Key == Key.Down)
                 HistoryPointer = HistoryPointer == History.Count - 1 ? HistoryPointer : HistoryPointer + 1;
-            else if (e.Key == Key.Down)
+            else if (e.Key == Key.Up)
                 HistoryPointer = HistoryPointer == 0 ? 0 : HistoryPointer - 1;
             return History[HistoryPointer].Item1;
         }
 
         #region Search Providers and Dictionary Initialization
-
-        public static void InitSearchDicFromIni()
+        private void InitSearchDicFromIni()
         {
             SearchDic.Clear();
             Dictionary<string, string> SectionDic = pp.ReadSectionDataAsDictionary("Search");
@@ -143,9 +131,9 @@ namespace iSearch
                 SearchDic.Add(entry.Key, new SearchItem(SearchDic[entry.Value].Site, SearchDic[entry.Value].SearchString, SearchDic[entry.Value].Separator));
         }
 
-        private static string httpExpand(string srch) => httpDirect(srch) + ".com";
+        private string httpExpand(string srch) => httpDirect(srch) + ".com";
 
-        private static string httpDirect(string srch) => (srch);
+        private string httpDirect(string srch) => (srch);
         #endregion
     }
 
