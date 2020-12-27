@@ -24,7 +24,7 @@ namespace iSearch
 
         private void Init()
         {
-            string IniFile = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "iSearch.ini");
+            string IniFile = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\iSearch.ini";
             pp = new PrivateProfile(IniFile);
             InitSearchDicFromIni();
             Browser = pp.ReadString("Options", "Browser", "");

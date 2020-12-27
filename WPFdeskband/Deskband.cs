@@ -8,20 +8,20 @@ using System.Windows;
 using CSDeskBand;
 using CSDeskBand.ContextMenu;
 
-namespace ExampleWpf
+namespace iSearchWPF
 {
     [ComVisible(true)]
-    [Guid("AA01ACB3-6CCC-497C-9CE6-9211F2EDFC10")]
-    [CSDeskBandRegistration(Name = "Sample wpf")]
+    [Guid("02AF4F83-AB00-4D1A-A248-1A4691F2616D")]
+    [CSDeskBandRegistration(Name = "iSearch (WPF)")]
     public class Deskband : CSDeskBandWpf
     {
         public Deskband()
         {
-            Options.ContextMenuItems = ContextMenuItems;
+            //Options.ContextMenuItems = ContextMenuItems;
         }
+        protected override UIElement UIElement => new UserControl2();
 
-        protected override UIElement UIElement => new UserControl1();
-
+        /*
         private List<DeskBandMenuItem> ContextMenuItems
         {
             get
@@ -40,5 +40,6 @@ namespace ExampleWpf
                 return new List<DeskBandMenuItem>() { action, separator, submenu };
             }
         }
+        */
     }
 }
