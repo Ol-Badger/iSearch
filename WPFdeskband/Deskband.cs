@@ -19,7 +19,7 @@ namespace iSearchWPF
         {
             //Options.ContextMenuItems = ContextMenuItems;
         }
-        protected override UIElement UIElement => new UserControl2();
+        protected override UIElement UIElement => new MainWindow();
 
         /*
         private List<DeskBandMenuItem> ContextMenuItems

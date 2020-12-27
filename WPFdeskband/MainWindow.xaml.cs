@@ -12,13 +12,13 @@ namespace iSearchWPF
 	/// <summary>
 	/// Interaction logic for UserControl2.xaml
 	/// </summary>
-	public partial class UserControl2 : UserControl
+	public partial class MainWindow : UserControl
 	{
 		private bool SearchUnavailable;
 		private readonly System.Timers.Timer keyTimer;
 		private aSearch search;
 
-		public UserControl2()
+		public MainWindow()
 		{
 			InitializeComponent();
 

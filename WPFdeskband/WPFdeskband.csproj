@@ -5,9 +5,10 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{865B7BDC-9818-4ABC-9915-D8B95043DB87}</ProjectGuid>
+    <Deterministic>false</Deterministic>
     <OutputType>library</OutputType>
-    <RootNamespace>ExampleWpf</RootNamespace>
-    <AssemblyName>ExampleWpf</AssemblyName>
+    <RootNamespace>iSearchWPF</RootNamespace>
+    <AssemblyName>iSearchWPF</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -25,6 +26,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
+    <Deterministic>false</Deterministic>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -51,8 +53,8 @@
     <Compile Include="..\common\AssemblyAccessors.cs" />
     <Compile Include="..\common\iSearch.cs" />
     <Compile Include="..\common\PrivateProfile.cs" />
-    <Compile Include="UserControl2.xaml.cs">
-      <DependentUpon>UserControl2.xaml</DependentUpon>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="UserControl1.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -64,7 +66,7 @@
       <DependentUpon>UserControl1.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="UserControl2.xaml">
+    <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
