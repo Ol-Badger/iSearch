@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+#if WINFORMS
+using System.Windows.Forms;
+#elif WPF
 using System.Windows.Input;
+#endif
 using csLib;
 
 namespace iSearch
@@ -11,9 +15,7 @@ namespace iSearch
     {
         private readonly Dictionary<string, SearchItem> SearchDic =
             new Dictionary<string, SearchItem>();
-
-        private readonly List<Tuple<string, bool>> History = new List<Tuple<string, bool>>();
-        private int HistoryPointer;
+        private readonly SearchHistory history=new SearchHistory();
         private string Browser;
         internal PrivateProfile pp;
 
@@ -32,7 +34,7 @@ namespace iSearch
 
         public void Search(string InputString, bool ControlKeyDown)
         {
-            History.Add(new Tuple<string, bool>(InputString, ControlKeyDown));
+            history.Add(InputString, ControlKeyDown);
 
             if (InputString.Contains(".") && !InputString.Contains(" "))
             {
@@ -92,7 +94,7 @@ namespace iSearch
                 return uri.Substring(Index + 5);
             return string.Empty;
         }
-        #endregion
+#endregion
 
         void RunBrowser(string target)
         {
@@ -104,13 +106,7 @@ namespace iSearch
 
         public string GetStringFromHistory(KeyEventArgs e)
         {
-            if (History.Count == 0)
-                return string.Empty;
-            if (e.Key == Key.Down)
-                HistoryPointer = HistoryPointer == History.Count - 1 ? HistoryPointer : HistoryPointer + 1;
-            else if (e.Key == Key.Up)
-                HistoryPointer = HistoryPointer == 0 ? 0 : HistoryPointer - 1;
-            return History[HistoryPointer].Item1;
+            return history.GetStringFromHistory(e);
         }
 
         #region Search Providers and Dictionary Initialization
@@ -134,7 +130,7 @@ namespace iSearch
         private string httpExpand(string srch) => httpDirect(srch) + ".com";
 
         private string httpDirect(string srch) => (srch);
-        #endregion
+#endregion
     }
 
     internal class SearchItem

@@ -15,6 +15,7 @@ namespace iSearch
 		private bool SearchUnavailable;
 		private readonly System.Timers.Timer keyTimer;
 		private aSearch search;
+		
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -43,10 +44,24 @@ namespace iSearch
 			SetWindowLong(wndHelper.Handle, (int)GetWindowLongFields.GWL_EXSTYLE, (IntPtr)exStyle);
 		}
 
+		private void Window_Closed(object sender, EventArgs e)
+		{
+			SavePosition();
+		}
+
+		private void SavePosition()
+		{
+			int offsetWidth = (int) SystemParameters.PrimaryScreenWidth - (int)Left;
+			int offsetHeight = (int)SystemParameters.PrimaryScreenHeight - (int)Top;
+			search.pp.WriteInt("Options", "OffsetHeight",offsetHeight);
+			search.pp.WriteInt("Options", "OffsetWidth", offsetWidth);
+		}
+
 		private void SetPosition()
 		{
-			int offsetHeight = search.pp.ReadInt("Options", "OffsetHeight", 0);
-			int offsetWidth = search.pp.ReadInt("Options", "OffsetWidth", 0);
+			//defaults to (+/-) center screen
+			int offsetHeight = search.pp.ReadInt("Options", "OffsetHeight", (int)SystemParameters.PrimaryScreenHeight/2);
+			int offsetWidth = search.pp.ReadInt("Options", "OffsetWidth", (int)SystemParameters.PrimaryScreenWidth/2);
 
 			Left = (int)SystemParameters.PrimaryScreenWidth - offsetWidth;
 			Top = (int)SystemParameters.PrimaryScreenHeight - offsetHeight;

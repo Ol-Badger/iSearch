@@ -20,7 +20,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;DESKBAND_WPF</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DESKBAND_WPF;WPF</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -50,22 +50,25 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\common\AssemblyAccessors.cs" />
-    <Compile Include="..\common\iSearch.cs" />
-    <Compile Include="..\common\PrivateProfile.cs" />
+    <Compile Include="..\common\AssemblyAccessors.cs">
+      <Link>Common\AssemblyAccessors.cs</Link>
+    </Compile>
+    <Compile Include="..\common\iSearch.cs">
+      <Link>Common\iSearch.cs</Link>
+    </Compile>
+    <Compile Include="..\common\PrivateProfile.cs">
+      <Link>Common\PrivateProfile.cs</Link>
+    </Compile>
+    <Compile Include="..\Common\SearchHistory.cs">
+      <Link>Common\SearchHistory.cs</Link>
+    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="UserControl1.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="CSDeskBand.cs" />
-    <Compile Include="Deskband.cs" />
-    <Compile Include="UserControl1.xaml.cs">
-      <DependentUpon>UserControl1.xaml</DependentUpon>
-      <SubType>Code</SubType>
+    <Compile Include="..\common\CSDeskBand.cs">
+      <Link>Common\CSDeskBand.cs</Link>
     </Compile>
+    <Compile Include="Deskband.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -94,5 +97,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
