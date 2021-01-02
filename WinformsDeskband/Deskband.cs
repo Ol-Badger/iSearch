@@ -7,11 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ExampleWinforms
+namespace WinformsDeskband
 {
     [ComVisible(true)]
-    [Guid("FB17B6DA-E3D7-4D17-9E43-3416983372A9")]
-    [CSDeskBand.CSDeskBandRegistration(Name = "Sample winforms", ShowDeskBand = false)]
+    [Guid("0F872327-7521-434B-8233-9AC87F37DB9B")]
+    [CSDeskBand.CSDeskBandRegistration(Name = "iSearch (Winforms)", ShowDeskBand = false)]
     public class Deskband : CSDeskBand.CSDeskBandWin
     {
         private static Control _control;
@@ -19,7 +19,7 @@ namespace ExampleWinforms
         public Deskband()
         {
             Options.MinHorizontalSize = new Size(100, 30);
-            _control = new UserControl1(this);
+            _control = new MainWindow(this);
         }
 
         protected override Control Control => _control;
