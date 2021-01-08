@@ -26,7 +26,7 @@
 				 TextAlignment="Center"
 				 MouseLeave="tbSearchBox_MouseLeave" 
 				 PreviewMouseUp="tbSearchBox_PreviewMouseUp"
-				 MouseDoubleClick="tbSearchBox_MouseDoubleClick" PreviewKeyDown="tbSearchBox_PreviewKeyDown" >
+				 MouseDoubleClick="tbSearchBox_MouseDoubleClick" PreviewKeyDown="tbSearchBox_PreviewKeyDown" Text="Search Here" FontSize="14" >
 			<TextBox.ContextMenu>
 				<ContextMenu>
                     <MenuItem Header="Reload ini" Click="OnReloadClick"/>
