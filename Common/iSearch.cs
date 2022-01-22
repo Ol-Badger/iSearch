@@ -27,7 +27,8 @@ namespace iSearch
 
         private void Init()
         {
-            string IniFile = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "iSearch.ini");
+            //string IniFile = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "iSearch.ini");
+            string IniFile = Path.ChangeExtension(Path.GetFullPath(Process.GetCurrentProcess().ProcessName), "ini");
             pp = new PrivateProfile(IniFile);
             InitSearchDicFromIni();
             Browser = pp.ReadString("Options", "Browser", GetSystemDefaultBrowser());
@@ -105,10 +106,7 @@ namespace iSearch
                 Process.Start(target);
         }
 
-        public string GetStringFromHistory(KeyEventArgs e)
-        {
-            return history.GetStringFromHistory(e);
-        }
+        public string GetStringFromHistory(KeyEventArgs e) => history.GetStringFromHistory(e);
 
         #region Search Providers and Dictionary Initialization
         private void InitSearchDicFromIni()

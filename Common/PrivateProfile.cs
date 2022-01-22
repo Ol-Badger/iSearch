@@ -108,7 +108,7 @@ namespace csLib
 			return ReadSectionDataAsArray(m_section);
 		}
 
-		private string ReadSectionData(string section)
+		public string ReadSectionData(string section)
 		{
 			const uint MAX_BUFFER = 32767;
 			string local;
@@ -213,6 +213,7 @@ namespace csLib
 		{
 			return DeleteString(m_section, key);
 		}
+
 		#endregion
 
 		#region StringList
@@ -240,7 +241,7 @@ namespace csLib
 		{
 			List<string> output = new List<string>();
 			const string NONE = "";
-			int i = 0;
+			int i = 1;
 			bool Exists = true;
 			while (Exists)
 			{
@@ -286,7 +287,6 @@ namespace csLib
 			List<string> output=pp.ReadStringList("sect", "pref");
 		}
 		*/
-
 		#endregion
 
 		#region bool
@@ -295,7 +295,7 @@ namespace csLib
 		 *
 		 * Read members without default values use a default of False
 		 */
-		public bool WriteBool(String section, String key, bool value)
+				public bool WriteBool(String section, String key, bool value)
 		{
 			return WriteString(section, key, value ? "1" : "0");
 		}
@@ -375,5 +375,5 @@ namespace csLib
 		static extern uint GetPrivateProfileSectionNames(IntPtr lpszReturnBuffer,
 		   uint nSize, string lpFileName);
 		#endregion
-	}   
+	}
 }
