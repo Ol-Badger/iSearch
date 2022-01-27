@@ -36,6 +36,7 @@ namespace iSearch
 
         public void Search(string InputString, bool ControlKeyDown)
         {
+            Init(); //Added 1/27/2022 so that ini file can be edited without restarting program
             history.Add(InputString, ControlKeyDown);
 
             if (InputString.Contains(".") && !InputString.Contains(" "))
@@ -96,7 +97,7 @@ namespace iSearch
                 return uri.Substring(Index + 5);
             return string.Empty;
         }
-#endregion
+        #endregion
 
         void RunBrowser(string target)
         {
