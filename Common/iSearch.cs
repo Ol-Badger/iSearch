@@ -32,6 +32,8 @@ namespace iSearch
             pp = new PrivateProfile(IniFile);
             InitSearchDicFromIni();
             Browser = pp.ReadString("Options", "Browser", GetSystemDefaultBrowser());
+            if (!File.Exists(Browser))
+                Browser = GetSystemDefaultBrowser();
         }
 
         public void Search(string InputString, bool ControlKeyDown)
