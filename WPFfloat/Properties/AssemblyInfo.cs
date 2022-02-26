@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MGT Systems")]
 [assembly: AssemblyProduct("Floater")]
-[assembly: AssemblyCopyright("Copyright © MGT Systems 2014-2020")]
+[assembly: AssemblyCopyright("Copyright © MGT Systems 2014-2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
