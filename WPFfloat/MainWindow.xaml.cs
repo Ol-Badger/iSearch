@@ -111,6 +111,7 @@ namespace iSearch
 		{
 			DateTime dt = DateTime.Now.ToLocalTime();
 			tbSearchBox.Text = $"{dt.ToShortDateString()}  {dt.ToShortTimeString()}";
+			tbSearchBox.InvalidateVisual();
 		}
 		#endregion
 

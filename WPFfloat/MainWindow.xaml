@@ -10,7 +10,7 @@
 		FocusManager.FocusedElement="{Binding ElementName=tbSearchBox}"
 		Height="31"
 		Topmost="True"
-		Icon="../common/find.ico" 
+		Icon="common/find.ico" 
         Closed="Window_Closed" >
 
 	<Canvas MouseLeftButtonDown="DragWindow"
