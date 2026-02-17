@@ -11,6 +11,8 @@ namespace csLib
 	/// It is a robust wrapper around the functions found in kernel.dll--see 'DLL Imports' section at bottom
 	/// of code.
 	/// See https://en.wikipedia.org/wiki/INI_file for details about .ini files.
+	/// See https://stackoverflow.com/questions/10507927/getprivateprofilestring-buffer-length for a fascinating
+	/// discourse on  buffer lengths and the like.
 	/// </para>
 	///   <para>
 	/// OnTrack keeps (virtually) all user-specific parameters in OnTrack.ini, found in the
@@ -23,24 +25,7 @@ namespace csLib
 	/// </summary>
 	public class PrivateProfile
 	{
-		#region Members
-		private readonly String m_iniFile;
-		private string m_section = "";
-		#endregion
-
-		#region Constructors (one with section, one without)
-		/// <summary>
-		///   <para>Initializes a new instance of the the PrivateProfile class from a file name.
-		/// </para>
-		///   <para> No (default) section is set here and would therefore have to be specified in each call;
-		/// The alternative is to later specify the default section using the Section setter.
-		/// </para>
-		/// </summary>
-		/// <param name="iFile">The name of the .ini file.</param>
-		public PrivateProfile(String iFile)
-		{
-			m_iniFile = iFile;
-		}
+		#region ctor
 		/// <summary>
 		///   <para>
 		/// Initializes a new instance of the PrivateProfile class from a file name and a default section.
@@ -51,25 +36,19 @@ namespace csLib
 		/// </summary>
 		/// <param name="iFile"></param>
 		/// <param name="sect"></param>
-		public PrivateProfile(String iFile, String sect)
+		public PrivateProfile(string iFile, string sect="")
 		{
-			m_iniFile = iFile;
-			m_section = sect;
+			File = iFile;
+			Section = sect;
 		}
 		#endregion
 
-		#region general
+		#region getter/setters
 		//Getter/Setters for the .ini file name and the default section.
 		//The file can only be set in the ctor.
-		public string File
-		{
-			get{return m_iniFile;}
-		}
-		public string Section
-		{
-			get { return m_section; }
-			set { m_section = value; }
-		}
+		public string File { get; }
+
+		public string Section { get; set; }
 		#endregion
 
 		#region section
@@ -78,11 +57,11 @@ namespace csLib
 
 		public Dictionary<string, string> ReadSectionDataAsDictionary(string section)
 		{
-			Dictionary<string, string> Dict = new Dictionary<string, string>();
-			string[] Data = ReadSectionDataAsArray(section);
+			var Dict = new Dictionary<string, string>();
+			var Data = ReadSectionDataAsArray(section);
 			foreach (var line in Data)
 			{
-				int equal = line.IndexOf('=');
+				var equal = line.IndexOf('=');
 				var key = line.Substring(0, equal);
 				var val = line.Substring(equal + 1, line.Length - equal - 1);
 				Dict.Add(key, val);
@@ -90,23 +69,17 @@ namespace csLib
 			return Dict;
 		}
 
-		public Dictionary<string, string> ReadSectionDataAsDictionary()
-		{
-			return ReadSectionDataAsDictionary(m_section);
-		}
-		
-		public string[] ReadSectionDataAsArray(String section)
+		public Dictionary<string, string> ReadSectionDataAsDictionary() => ReadSectionDataAsDictionary(Section);
+
+		public string[] ReadSectionDataAsArray(string section)
 		{
 			string local = ReadSectionData(section);
 			if (local != null)
 				return local.Substring(0, local.Length - 1).Split('\0');	//get rid of terminating null
-			return new string[0];
+			return Array.Empty<string>();
 		}
 
-		public string[] ReadSectionDataAsArray()
-		{
-			return ReadSectionDataAsArray(m_section);
-		}
+		public string[] ReadSectionDataAsArray() => ReadSectionDataAsArray(Section);
 
 		public string ReadSectionData(string section)
 		{
@@ -115,7 +88,7 @@ namespace csLib
 			IntPtr pReturnedString = Marshal.AllocCoTaskMem((int)MAX_BUFFER);
 			try
 			{
-				uint bytesReturned = GetPrivateProfileSection(section, pReturnedString, MAX_BUFFER, m_iniFile);
+				uint bytesReturned = GetPrivateProfileSection(section, pReturnedString, MAX_BUFFER, File);
 				if (bytesReturned == 0)
 					return null;
 				local = Marshal.PtrToStringAuto(pReturnedString, (int) bytesReturned);
@@ -136,7 +109,7 @@ namespace csLib
 			IntPtr pReturnedString = Marshal.AllocCoTaskMem((int)MAX_BUFFER);
 			try
 			{
-				uint bytesReturned = GetPrivateProfileSectionNames(pReturnedString, MAX_BUFFER, m_iniFile);
+				uint bytesReturned = GetPrivateProfileSectionNames(pReturnedString, MAX_BUFFER, File);
 				if (bytesReturned == 0)
 					return null;
 				local = Marshal.PtrToStringAuto(pReturnedString, (int) bytesReturned);
@@ -149,24 +122,23 @@ namespace csLib
 			return local.Substring(0, local.Length - 1).Split('\0');	//get rid of terminating null
 		}
 
-		public bool WriteSectionData(string section,string value)
+		public bool WriteSectionData(string section,string value) => WritePrivateProfileSection(section, value, File);
+
+		public bool WriteSectionData(string value) => WriteSectionData(Section,value);
+
+		public bool WriteSectionDataAsArray(string section, string[] keyvals)
 		{
-			return WritePrivateProfileSection(section, value, m_iniFile);
+			var value = string.Join("\0", keyvals) + "\0\0";
+			return WritePrivateProfileSection(section, value, File);
 		}
 
-		public bool WriteSectionData(string value)
-		{
-			return WriteSectionData(m_section,value);
-		}
+		public bool WriteSectionDataAsArray(string[] keyvals) => WriteSectionDataAsArray(Section, keyvals);
 
-		public bool DeleteSection()
-		{
-			return DeleteSection(m_section);
-		}
+		public bool DeleteSection() => DeleteSection(Section);
 
-		public bool DeleteSection(String section)
+		public bool DeleteSection(string section)
 		{
-			return WritePrivateProfileSection(section, "", m_iniFile);
+			return WritePrivateProfileSection(section, "", File);
 		}
 		#endregion
 
@@ -175,44 +147,26 @@ namespace csLib
 		 * Not only are these members called by the end-user, but they're invoked by
 		 * 'int' and 'bool' members as well.
 		 *
-		 * Read members without default values use a default of String.Empty
+		 * Read members without default values use a default of string.Empty
 		*/
-		public bool WriteString(String section, String key, String value)
-		{
-			return WritePrivateProfileString(section, key, value, m_iniFile);
-		}
+		public bool WriteString(string section, string key, string value) => WritePrivateProfileString(section, key, value, File);
 
-		public bool WriteString(String key, String value)
-		{
-			return WriteString(m_section, key, value);
-		}
+		public bool WriteString(string key, string value) => WriteString(Section, key, value);
 
-		public String ReadString(String section, String key, String deflt)
+		public string ReadString(string section, string key, string deflt)
 		{
 			StringBuilder sb = new StringBuilder(256);
-			GetPrivateProfileString(section, key, deflt, sb, sb.Capacity, m_iniFile);
+			GetPrivateProfileString(section, key, deflt, sb, sb.Capacity, File);
 			return sb.ToString();
 		}
 
-		public String ReadString(String key, String deflt)
-		{
-			return ReadString(m_section, key, deflt);
-		}
+		public string ReadString(string key, string deflt) => ReadString(Section, key, deflt);
 
-		public string ReadString(string key)
-		{
-			return ReadString(m_section, key, "");
-		}
+		public string ReadString(string key) => ReadString(Section, key, "");
 
-		public bool DeleteString(String section, String key)
-		{
-			return WritePrivateProfileString(section, key, null, m_iniFile);
-		}
+		public bool DeleteString(string section, string key) => WritePrivateProfileString(section, key, null, File);
 
-		public bool DeleteString(String key)
-		{
-			return DeleteString(m_section, key);
-		}
+		public bool DeleteString(string key) => DeleteString(Section, key);
 
 		#endregion
 
@@ -225,43 +179,32 @@ namespace csLib
 		 *
 		 * These StringList functions consume/produce List<string> containing the values to be read/written.
 		 */
-		public void WriteStringList(String prefix, List<string> value)
-		{
-			WriteStringList(m_section, prefix, value);
-		}
+		public void WriteStringList(string prefix, List<string> value) => WriteStringList(Section, prefix, value);
 
-		public void WriteStringList(String section, String prefix, List<string> value)
+		public void WriteStringList(string section, string prefix, List<string> value)
 		{
 			ClearStringPrefix(section, prefix);
 			for (int i = 0; i < value.Count; i++)
 				WriteString(section, prefix + i, value[i]);
 		}
 
-		public List<String> ReadStringList(String section, String prefix)
+		public List<string> ReadStringList(string section, string prefix)
 		{
 			List<string> output = new List<string>();
-			const string NONE = "";
-			int i = 1;
-			bool Exists = true;
-			while (Exists)
+			int i = 0;
+			while (true)
 			{
-				string tmp = ReadString(section, prefix + i, NONE);
-				Exists = (tmp != NONE);
-				if (Exists)
-				{
-					output.Add(tmp);
-					i++;
-				}
+				string tmp = ReadString(section, prefix + i, "");
+				if (tmp == "") break;
+				output.Add(tmp);
+				i++;
 			}
 			return output;
 		}
 
-		public List<String> ReadStringList(String prefix)
-		{
-			return ReadStringList(m_section, prefix);
-		}
+		public List<string> ReadStringList(string prefix) => ReadStringList(Section, prefix);
 
-		public void ClearStringPrefix(String section, String prefix)
+		public void ClearStringPrefix(string section, string prefix)
 		{
 			const string NONE = "NONE";
 			int i = 0;
@@ -295,32 +238,21 @@ namespace csLib
 		 *
 		 * Read members without default values use a default of False
 		 */
-				public bool WriteBool(String section, String key, bool value)
-		{
-			return WriteString(section, key, value ? "1" : "0");
-		}
+		public bool WriteBool(string section, string key, bool value) => WriteString(section, key, value ? "1" : "0");
 
-		public bool WriteBool(String key, bool value)
-		{
-			return WriteBool(m_section, key, value);
-		}
+		public bool WriteBool(string key, bool value) => WriteBool(Section, key, value);
 
-		public bool ReadBool(String section, String key, bool deflt)
+		public bool ReadBool(string section, string key, bool deflt)
 		{
 			string def = deflt ? "1" : "0";
 			string result = ReadString(section, key, def);
 			return result == "1";
 		}
 
-		public bool ReadBool(String key, bool deflt)
-		{
-			return ReadBool(m_section, key, deflt);
-		}
+		public bool ReadBool(string key, bool deflt) => ReadBool(Section, key, deflt);
 
-		public bool ReadBool(String key)
-		{
-			return ReadBool(m_section, key, false);
-		}
+		public bool ReadBool(string key) => ReadBool(Section, key, false);
+
 		#endregion
 
 		#region int
@@ -329,31 +261,16 @@ namespace csLib
 		 *
 		 * Read members without default values use a default of 0
 		 */
-		 public int ReadInt(String section, String key, int deflt)
-		{
-			return (int)GetPrivateProfileInt(section, key, deflt, m_iniFile);
-		}
+		 public int ReadInt(string section, string key, int deflt) => (int)GetPrivateProfileInt(section, key, deflt, File);
 
-		public int ReadInt(String key, int deflt)
-		{
-			return ReadInt(m_section, key, deflt);
-		}
+		 public int ReadInt(string key, int deflt) => ReadInt(Section, key, deflt);
 
-		public int ReadInt(string key)
-		{
-			return ReadInt(m_section, key, 0);
-		}
+		 public int ReadInt(string key) => ReadInt(Section, key, 0);
 
-		public bool WriteInt(String section, String key, int val)
-		{
-			return WriteString(section,key,val.ToString());
-		}
+		 public bool WriteInt(string section, string key, int val) => WriteString(section,key,val.ToString());
 
-		public bool WriteInt(String key, int val)
-		{
-			return WriteInt(m_section,key,val);
-		}
-		#endregion
+		 public bool WriteInt(string key, int val) => WriteInt(Section,key,val);
+		 #endregion
 
 		#region DLL Imports
 		[DllImport("kernel32.dll")]

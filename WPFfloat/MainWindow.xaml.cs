@@ -1,6 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -15,7 +17,8 @@ namespace iSearch
 		private bool SearchUnavailable;
 		private readonly System.Timers.Timer keyTimer;
 		private aSearch search;
-		
+		private readonly DispatcherTimer FocusTimer=new DispatcherTimer();
+
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -24,6 +27,9 @@ namespace iSearch
 			minuteTimer.Tick += minuteTimer_Tick;
 			minuteTimer.Interval = TimeSpan.FromMinutes(1.0);
 			minuteTimer.Start();
+
+			FocusTimer.Interval = TimeSpan.FromSeconds(5.0);
+			FocusTimer.Tick+=FocusTimer_Tick;
 
 			//keyTimer exists to prevent multiple searches within [interval]
 			keyTimer = new System.Timers.Timer(100) {AutoReset = false};
@@ -102,6 +108,12 @@ namespace iSearch
 				ShowTime();
 		}
 
+		private void FocusTimer_Tick(object sender, EventArgs e)
+		{
+			ShowTime();
+			FocusTimer.Stop();
+		}
+
 		private void keyTimer_Elapsed(object sendeer, EventArgs e)
 		{
 			SearchUnavailable = false;
@@ -116,6 +128,16 @@ namespace iSearch
 		#endregion
 
 		#region focus/click events
+
+		private void tbLostFocus(object sender, RoutedEventArgs e)
+		{
+			ShowTime();
+		}
+
+		private void tbGotFocus(object sender, RoutedEventArgs e)
+		{
+			FocusTimer.Start();
+		}
 		private void OnKeyDown(object sender, KeyEventArgs e)
 		{
 			if (SearchUnavailable)

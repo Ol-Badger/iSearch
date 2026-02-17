@@ -21,12 +21,17 @@
 				 KeyDown="OnKeyDown"
 				 Width="160"
 				 Height="24" 
+                 FontSize="14"
 				 Background="Black" 
 				 Foreground="White" 
 				 TextAlignment="Center"
 				 MouseLeave="tbSearchBox_MouseLeave" 
 				 PreviewMouseUp="tbSearchBox_PreviewMouseUp"
-				 MouseDoubleClick="tbSearchBox_MouseDoubleClick" PreviewKeyDown="tbSearchBox_PreviewKeyDown" Text="Search Here" FontSize="14" >
+				 MouseDoubleClick="tbSearchBox_MouseDoubleClick" 
+                 PreviewKeyDown="tbSearchBox_PreviewKeyDown" 
+				 GotKeyboardFocus="tbGotFocus"
+				 LostKeyboardFocus="tbLostFocus"
+                 Text="Search Here" >
 			<TextBox.ContextMenu>
 				<ContextMenu>
                     <MenuItem Header="Reload ini" Click="OnReloadClick"/>
