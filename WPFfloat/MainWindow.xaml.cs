@@ -15,6 +15,7 @@ namespace iSearch
 	public partial class MainWindow
 	{
 		private bool SearchUnavailable;
+		private bool showingTime;
 		private readonly System.Timers.Timer keyTimer;
 		private aSearch search;
 		private readonly DispatcherTimer FocusTimer=new DispatcherTimer();
@@ -22,11 +23,12 @@ namespace iSearch
 		public MainWindow()
 		{
 			InitializeComponent();
+			tbSearchBox.TextChanged += (sender, e) => showingTime = false;
 
 			DispatcherTimer minuteTimer = new DispatcherTimer();
 			minuteTimer.Tick += minuteTimer_Tick;
-			minuteTimer.Interval = TimeSpan.FromMinutes(1.0);
-			minuteTimer.Start();
+			minuteTimer.Interval = TimeSpan.FromMinutes(1.0);   //NB: this is not exact--it initializes at program start, now at minute mark, but good enough
+            minuteTimer.Start();
 
 			FocusTimer.Interval = TimeSpan.FromSeconds(5.0);
 			FocusTimer.Tick+=FocusTimer_Tick;
@@ -104,7 +106,7 @@ namespace iSearch
 		#region Time/Timer
 		private void minuteTimer_Tick(object sender, EventArgs e)
 		{
-			if (!tbSearchBox.IsKeyboardFocused)
+			if (showingTime)
 				ShowTime();
 		}
 
@@ -123,6 +125,7 @@ namespace iSearch
 		{
 			DateTime dt = DateTime.Now.ToLocalTime();
 			tbSearchBox.Text = $"{dt.ToShortDateString()}  {dt.ToShortTimeString()}";
+			showingTime = true;
 			tbSearchBox.InvalidateVisual();
 		}
 		#endregion
