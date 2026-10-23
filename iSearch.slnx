@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="WinformsDeskband/WinformsDeskband.csproj" />
+  <Project Path="WPFdeskband/WPFdeskband.csproj" />
+  <Project Path="wpffloat/iSearch.csproj" />
+</Solution>

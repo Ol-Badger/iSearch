@@ -3,100 +3,66 @@ using System.Reflection;
 
 namespace csLib
 {
+    /// <summary>
+    ///   <para>AssemblyAccessors is a static class used to retrieve information about the current assembly.</para>
+    ///   <para>Although most often used in the About form (also in csLib) it can be usefully employeed in any startup or splash form.</para>
+    ///   <para>The properties of this form are not documented in the source code or here, as they are deemed obvious. Each of them is a static string.</para>
+    /// </summary>
     static class AssemblyAccessors
     {
+        #region Special-Purpose
         public static DateTime BuildDate
         {
             get
             {
-                Version version = Assembly.GetExecutingAssembly().GetName().Version;
-                return new DateTime(2000, 1, 1).Add(new TimeSpan(TimeSpan.TicksPerDay * version.Build + TimeSpan.TicksPerSecond * 2 * version.Revision));
-                // days since January 1, 2000     
-                // seconds since midnight, today
-                }
+                var version = Assembly.GetExecutingAssembly().GetName().Version;
+                return new DateTime(2000, 1, 1)
+                    .AddDays(version.Build)
+                    .AddSeconds(version.Revision * 2);
+            }
         }
+
+        public static string AssemblyVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        #endregion
+
+        #region Helpers
+        private static readonly Assembly assembly =
+            typeof(AssemblyAccessors).Assembly;
+
+        private static string GetAttributeValue<T>(Func<T, string> select)
+            where T : Attribute
+        {
+            object[] attributes =
+                assembly.GetCustomAttributes(typeof(T), false);
+
+            return attributes.Length == 0
+                ? ""
+                : select((T)attributes[0]);
+        }
+        #endregion
+
         public static string AssemblyTitle
         {
             get
             {
-                // Get all Title attributes on this assembly
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
-                // If there is at least one Title attribute
-                if (attributes.Length > 0)
-                {
-                    // Select the first one
-                    AssemblyTitleAttribute titleAttribute = (AssemblyTitleAttribute)attributes[0];
-                    // If it is not an empty string, return it
-                    if (titleAttribute.Title != "")
-                        return titleAttribute.Title;
-                }
-                // If there was no Title attribute, or if the Title attribute was the empty string, return the .exe name
-                return System.IO.Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
+                var title = GetAttributeValue<AssemblyTitleAttribute>(a => a.Title);
+                return title == "" ? System.IO.Path.GetFileNameWithoutExtension(assembly.Location) : title;
             }
         }
 
-        public static string AssemblyVersion
-        {
-            get
-            {
-                return Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            }
-        }
+        public static string AssemblyDescription =>
+            GetAttributeValue<AssemblyDescriptionAttribute>(a => a.Description);
 
-        public static string AssemblyDescription
-        {
-            get
-            {
-                // Get all Description attributes on this assembly
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
-                // If there aren't any Description attributes, return an empty string
-                if (attributes.Length == 0)
-                    return "";
-                // If there is a Description attribute, return its value
-                return ((AssemblyDescriptionAttribute)attributes[0]).Description;
-            }
-        }
+        public static string AssemblyProduct =>
+            GetAttributeValue<AssemblyProductAttribute>(a => a.Product);
 
-        public static string AssemblyProduct
-        {
-            get
-            {
-                // Get all Product attributes on this assembly
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), false);
-                // If there aren't any Product attributes, return an empty string
-                if (attributes.Length == 0)
-                    return "";
-                // If there is a Product attribute, return its value
-                return ((AssemblyProductAttribute)attributes[0]).Product;
-            }
-        }
+        public static string AssemblyCopyright =>
+            GetAttributeValue<AssemblyCopyrightAttribute>(a => a.Copyright);
 
-        public static string AssemblyCopyright
-        {
-            get
-            {
-                // Get all Copyright attributes on this assembly
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
-                // If there aren't any Copyright attributes, return an empty string
-                if (attributes.Length == 0)
-                    return "";
-                // If there is a Copyright attribute, return its value
-                return ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
-            }
-        }
+        public static string AssemblyCompany =>
+            GetAttributeValue<AssemblyCompanyAttribute>(a => a.Company);
 
-        public static string AssemblyCompany
-        {
-            get
-            {
-                // Get all Company attributes on this assembly
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
-                // If there aren't any Company attributes, return an empty string
-                if (attributes.Length == 0)
-                    return "";
-                // If there is a Company attribute, return its value
-                return ((AssemblyCompanyAttribute)attributes[0]).Company;
-            }
-        }
+        public static string AssemblyConfiguration =>
+            GetAttributeValue<AssemblyConfigurationAttribute>(a => a.Configuration);
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Runtime.InteropServices;
 
@@ -64,7 +65,8 @@ namespace csLib
 				var equal = line.IndexOf('=');
 				var key = line.Substring(0, equal);
 				var val = line.Substring(equal + 1, line.Length - equal - 1);
-				Dict.Add(key, val);
+				if (!Dict.ContainsKey(key))
+					Dict.Add(key, val);
 			}
 			return Dict;
 		}
@@ -270,7 +272,304 @@ namespace csLib
 		 public bool WriteInt(string section, string key, int val) => WriteString(section,key,val.ToString());
 
 		 public bool WriteInt(string key, int val) => WriteInt(Section,key,val);
-		 #endregion
+		#endregion
+
+		#region Toml Dictionaries
+		//These are what the spec calls 'Inline Tables'
+		//Example:
+		//name = { first = "Tom", last = "Preston-Werner" }	//use ReadTomlStringDictionary
+		//point = {x=1, y=2}								//use ReadTomlFloatDictionary
+
+		public Dictionary<string, string> ReadTomlStringDictionary(string section, string key)
+		{
+			string raw = ReadString(section, key, "");
+			return ParseInlineTable(raw);
+		}
+
+		public Dictionary<string, string> ReadTomlStringDictionary(string key) => ReadTomlStringDictionary(Section, key);
+
+		public bool WriteTomlStringDictionary(string section, string key, IDictionary<string, string> value)
+			=> WriteString(section, key, FormatInlineTable(value));
+
+		public bool WriteTomlStringDictionary(string key, IDictionary<string, string> value)
+			=> WriteTomlStringDictionary(Section, key, value);
+
+		public Dictionary<string, float> ReadTomlFloatDictionary(string section, string key)
+		{
+			var strings = ReadTomlStringDictionary(section, key);
+			var output = new Dictionary<string, float>();
+			foreach (var pair in strings)
+				output[pair.Key] = float.Parse(pair.Value, CultureInfo.InvariantCulture);
+			return output;
+		}
+
+		public Dictionary<string, float> ReadTomlFloatDictionary(string key) => ReadTomlFloatDictionary(Section, key);
+
+		public bool WriteTomlFloatDictionary(string section, string key, IDictionary<string, float> value)
+		{
+			var strings = new Dictionary<string, string>();
+			foreach (var pair in value)
+				strings[pair.Key] = pair.Value.ToString(CultureInfo.InvariantCulture);
+			return WriteTomlStringDictionary(section, key, strings);
+		}
+
+		public bool WriteTomlFloatDictionary(string key, IDictionary<string, float> value)
+			=> WriteTomlFloatDictionary(Section, key, value);
+		#endregion
+
+		#region Toml Lists
+		//These are what the spec calls 'Arrays'
+		//Example:
+		//integers = [ 1, 2, 3 ]	//use ReadTomlIntList
+		//names = [a, b, c]			//use ReadTomlStringList
+		//pos = [1.1, 2.2]			//use ReadTomlFloatList
+		
+		public List<int> ReadTomlIntList(string section, string key)
+		{
+			var strings = ParseArray(ReadString(section, key, ""));
+			var output = new List<int>();
+			foreach (string value in strings)
+				output.Add(int.Parse(value, CultureInfo.InvariantCulture));
+			return output;
+		}
+
+		public List<int> ReadTomlIntList(string key) => ReadTomlIntList(Section, key);
+
+		public bool WriteTomlIntList(string section, string key, IList<int> value)
+		{
+			var strings = new List<string>();
+			foreach (int item in value)
+				strings.Add(item.ToString(CultureInfo.InvariantCulture));
+			return WriteString(section, key, FormatArray(strings));
+		}
+
+		public bool WriteTomlIntList(string key, IList<int> value) => WriteTomlIntList(Section, key, value);
+
+		public List<float> ReadTomlFloatList(string section, string key)
+		{
+			var strings = ParseArray(ReadString(section, key, ""));
+			var output = new List<float>();
+			foreach (string value in strings)
+				output.Add(float.Parse(value, CultureInfo.InvariantCulture));
+			return output;
+		}
+
+		public List<float> ReadTomlFloatList(string key) => ReadTomlFloatList(Section, key);
+
+		public bool WriteTomlFloatList(string section, string key, IList<float> value)
+		{
+			var strings = new List<string>();
+			foreach (int item in value)
+				strings.Add(item.ToString(CultureInfo.InvariantCulture));
+			return WriteString(section, key, FormatArray(strings));
+		}
+
+		public bool WriteTomlFloatList(string key, IList<float> value) => WriteTomlFloatList(Section, key, value);
+
+		public List<string> ReadTomlStringList(string section, string key)
+			=> ParseArray(ReadString(section, key, ""));
+
+		public List<string> ReadTomlStringList(string key) => ReadTomlStringList(Section, key);
+
+		public bool WriteTomlStringList(string section, string key, IList<string> value)
+			=> WriteString(section, key, FormatArray(value));
+
+		public bool WriteTomlStringList(string key, IList<string> value)
+			=> WriteTomlStringList(Section, key, value);
+		#endregion
+
+		#region Toml utilities
+		private static Dictionary<string, string> ParseInlineTable(string text)
+		{
+			var output = new Dictionary<string, string>();
+			if (string.IsNullOrWhiteSpace(text))
+				return output;
+
+			string trimmed = text.Trim();
+			if (trimmed.Length < 2 || trimmed[0] != '{' || trimmed[trimmed.Length - 1] != '}')
+				throw new FormatException("Inline TOML table must be enclosed in braces.");
+
+			string body = trimmed.Substring(1, trimmed.Length - 2).Trim();
+			if (body.Length == 0)
+				return output;
+
+			foreach (string pair in SplitTomlPairs(body))
+			{
+				int equal = pair.IndexOf('=');
+				if (equal <= 0 || equal == pair.Length - 1)
+					throw new FormatException("Invalid TOML key/value pair in inline table.");
+
+				string rawKey = pair.Substring(0, equal).Trim();
+				string rawValue = pair.Substring(equal + 1).Trim();
+				string parsedKey = UnquoteTomlString(rawKey);
+				string parsedValue = UnquoteTomlString(rawValue);
+				output[parsedKey] = parsedValue;
+			}
+
+			return output;
+		}
+
+		private static string FormatInlineTable(IDictionary<string, string> value)
+		{
+			if (value == null || value.Count == 0)
+				return "{ }";
+
+			var parts = new List<string>();
+			foreach (var pair in value)
+			{
+				string key = FormatTomlKey(pair.Key);
+				string val = FormatTomlValue(pair.Value);
+				parts.Add($"{key} = {val}");
+			}
+
+			return "{ " + string.Join(", ", parts) + " }";
+		}
+
+		private static List<string> ParseArray(string text)
+		{
+			var output = new List<string>();
+			if (string.IsNullOrWhiteSpace(text))
+				return output;
+
+			string trimmed = text.Trim();
+			if (trimmed.Length < 2 || trimmed[0] != '[' || trimmed[trimmed.Length - 1] != ']')
+				throw new FormatException("TOML array must be enclosed in brackets.");
+
+			string body = trimmed.Substring(1, trimmed.Length - 2).Trim();
+			if (body.Length == 0)
+				return output;
+
+			foreach (string item in SplitTomlItems(body))
+				output.Add(UnquoteTomlString(item.Trim()));
+
+			return output;
+		}
+
+		private static string FormatArray(IList<string> value)
+		{
+			if (value == null || value.Count == 0)
+				return "[ ]";
+
+			var parts = new List<string>();
+			foreach (string item in value)
+				parts.Add(FormatTomlValue(item));
+
+			return "[ " + string.Join(", ", parts) + " ]";
+		}
+
+		private static List<string> SplitTomlPairs(string body)
+		{
+			var parts = new List<string>();
+			var current = new StringBuilder();
+			bool inQuotes = false;
+
+			for (int i = 0; i < body.Length; i++)
+			{
+				char ch = body[i];
+				if (ch == '"' && !IsEscaped(body, i))
+				{
+					inQuotes = !inQuotes;
+					current.Append(ch);
+				}
+				else if (ch == ',' && !inQuotes)
+				{
+					parts.Add(current.ToString().Trim());
+					current.Clear();
+				}
+				else
+				{
+					current.Append(ch);
+				}
+			}
+
+			if (current.Length > 0)
+				parts.Add(current.ToString().Trim());
+
+			return parts;
+		}
+
+		private static List<string> SplitTomlItems(string body)
+		{
+			var parts = new List<string>();
+			var current = new StringBuilder();
+			bool inQuotes = false;
+
+			for (int i = 0; i < body.Length; i++)
+			{
+				char ch = body[i];
+				if (ch == '"' && !IsEscaped(body, i))
+				{
+					inQuotes = !inQuotes;
+					current.Append(ch);
+				}
+				else if (ch == ',' && !inQuotes)
+				{
+					parts.Add(current.ToString().Trim());
+					current.Clear();
+				}
+				else
+				{
+					current.Append(ch);
+				}
+			}
+
+			if (current.Length > 0)
+				parts.Add(current.ToString().Trim());
+
+			return parts;
+		}
+
+		private static bool IsEscaped(string text, int index)
+		{
+			int slashCount = 0;
+			for (int i = index - 1; i >= 0 && text[i] == '\\'; i--)
+				slashCount++;
+			return (slashCount % 2) == 1;
+		}
+
+		private static string UnquoteTomlString(string text)
+		{
+			if (text.Length >= 2 && text[0] == '"' && text[text.Length - 1] == '"')
+			{
+				string inner = text.Substring(1, text.Length - 2);
+				return inner
+					.Replace("\\\"", "\"")
+					.Replace("\\\\", "\\");
+			}
+
+			return text;
+		}
+
+		private static string FormatTomlKey(string key)
+		{
+			if (string.IsNullOrEmpty(key))
+				return "\"\"";
+
+			foreach (char ch in key)
+			{
+				if (!(char.IsLetterOrDigit(ch) || ch == '_' || ch == '-'))
+					return FormatTomlString(key);
+			}
+
+			return key;
+		}
+
+		private static string FormatTomlValue(string value)
+		{
+			if (value == null)
+				return "\"\"";
+
+			if (double.TryParse(value, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out _))
+				return value;
+
+			return FormatTomlString(value);
+		}
+
+		private static string FormatTomlString(string value)
+		{
+			return "\"" + value.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"";
+		}
+		#endregion
 
 		#region DLL Imports
 		[DllImport("kernel32.dll")]
