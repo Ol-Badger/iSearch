@@ -1,5 +1,6 @@
 <Solution>
-  <Project Path="WinformsDeskband/WinformsDeskband.csproj" />
-  <Project Path="WPFdeskband/WPFdeskband.csproj" />
-  <Project Path="wpffloat/iSearch.csproj" />
+  <Project Path="iSearchFramework/iSearchFramework.csproj" Id="3ae7b9a9-ea5e-4962-966d-bdda0af1269f" />
+  <Project Path="iSearchNet/iSearchNet.csproj" Id="6dbef547-8a34-4f88-ac85-a8cc1dfc76d9" />
+  <Project Path="WinformsDeskband/WinformsDeskband.csproj" Id="495d808d-6d98-44c9-b4e3-4abb339099c4" />
+  <Project Path="WPFdeskband/WPFdeskband.csproj" Id="865b7bdc-9818-4abc-9915-d8b95043db87" />
 </Solution>

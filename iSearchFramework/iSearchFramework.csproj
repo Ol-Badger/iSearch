@@ -62,11 +62,13 @@
     <Compile Include="..\common\AssemblyAccessors.cs">
       <Link>Common\AssemblyAccessors.cs</Link>
     </Compile>
-    <Compile Include="..\common\SearchHistory.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="..\Common\SearchHistory.cs">
+      <Link>Common\SearchHistory.cs</Link>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
