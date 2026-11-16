@@ -30,8 +30,8 @@ namespace iSearch
 			minuteTimer.Interval = TimeSpan.FromMinutes(1.0);   //NB: this is not exact--it initializes at program start, now at minute mark, but good enough
             minuteTimer.Start();
 
-			FocusTimer.Interval = TimeSpan.FromSeconds(5.0);
-			FocusTimer.Tick+=FocusTimer_Tick;
+			FocusTimer.Interval = TimeSpan.FromSeconds(30.0);   //to give time to enter search string before showing time again
+            FocusTimer.Tick+=FocusTimer_Tick;
 
 			//keyTimer exists to prevent multiple searches within [interval]
 			keyTimer = new System.Timers.Timer(100) {AutoReset = false};
